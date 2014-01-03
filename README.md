@@ -28,10 +28,10 @@ Config::write('app.url', 'http://octobercms.com');
 
 ### Usage outside Laravel
 
-The `Write` class can be used anywhere.
+The `Rewrite` class can be used anywhere.
 
 ```php
-$writeConfig = new October\Rain\Config\Write;
+$writeConfig = new October\Rain\Config\Rewrite;
 $writeConfig->toFile('path/to/config.php', [
     'item' => 'new value',
     'nested.config.item' => 'value'
