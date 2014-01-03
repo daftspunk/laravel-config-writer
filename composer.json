@@ -1,0 +1,29 @@
+{
+    "name": "october/config",
+    "description": "Configuration extension",
+    "homepage": "http://octobercms.com",
+    "keywords": ["october cms", "october", "laravel", "config", "write"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexey Bobkov",
+            "email": "aleksey.bobkov@gmail.com"
+        },
+        {
+            "name": "Samuel Georges",
+            "email": "daftspunky@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/config": "4.1.x",
+        "october/support": "1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "October\\Rain\\Config": ""
+        }
+    },
+    "target-dir": "October/Rain/Config",
+    "minimum-stability": "dev"
+}
