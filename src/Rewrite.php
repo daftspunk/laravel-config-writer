@@ -110,7 +110,7 @@ class Rewrite
         // The target key closure
         $expression[] = '['.$quoteChar.']';
 
-        return '/' . implode('', $expression) . '/i';
+        return '/' . implode('', $expression) . '/';
     }
 
     /**
@@ -127,9 +127,9 @@ class Rewrite
         $expression[] = '([\'|"]'.$targetKey.'[\'|"]\s*=>\s*)';
 
         // The target value to be replaced ($3)
-        $expression[] = '(true|false|null|[\d]+)';
+        $expression[] = '([tT][rR][uU][eE]|[fF][aA][lL][sS][eE]|[nN][uU][lL]{2}|[\d]+)';
 
-        return '/' . implode('', $expression) . '/i';
+        return '/' . implode('', $expression) . '/';
     }
 
     private function buildArrayOpeningExpression($arrayItems)
@@ -138,7 +138,7 @@ class Rewrite
             $itemOpen = array();
             foreach ($arrayItems as $item) {
                 // The left hand array assignment
-                $itemOpen[] = '[\'|"]'.$item.'[\'|"]\s*=>\s*(?:array\(|[\[])';
+                $itemOpen[] = '[\'|"]'.$item.'[\'|"]\s*=>\s*(?:[aA][rR]{2}[aA][yY]\(|[\[])';
             }
 
             // Capture all opening array (non greedy)
