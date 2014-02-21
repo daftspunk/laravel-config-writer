@@ -74,6 +74,9 @@ class Rewrite
             elseif (is_bool($value)) {
                 $replaceValue = ($value ? 'true' : 'false');
             }
+            elseif (is_null($value)) {
+                $replaceValue = 'null';
+            }
             else {
                 $replaceValue = $value;
             }
@@ -111,7 +114,7 @@ class Rewrite
     }
 
     /**
-     * Common constants only (true, false, integers)
+     * Common constants only (true, false, null, integers)
      */
     private function buildConstantExpression($targetKey, $arrayItems = array())
     {
@@ -124,7 +127,7 @@ class Rewrite
         $expression[] = '([\'|"]'.$targetKey.'[\'|"]\s*=>\s*)';
 
         // The target value to be replaced ($3)
-        $expression[] = '(true|false|[\d]+)';
+        $expression[] = '(true|false|null|[\d]+)';
 
         return '/' . implode('', $expression) . '/i';
     }
