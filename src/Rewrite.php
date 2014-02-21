@@ -91,7 +91,7 @@ class Rewrite
             $replacements[] = '${1}${2}'.$replaceValue;
         }
 
-        return preg_replace($patterns, $replacements, $contents);
+        return preg_replace($patterns, $replacements, $contents, 1);
     }
 
     private function buildStringExpression($targetKey, $arrayItems = array(), $quoteChar = "'")
