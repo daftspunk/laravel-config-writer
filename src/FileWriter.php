@@ -44,7 +44,7 @@ class FileWriter
         $this->loader = $loader;
         $this->files = $loader->getFilesystem();
         $this->defaultPath = $defaultPath;
-        $this->rewriter = new Rewriter;
+        $this->rewriter = new Rewrite;
     }
 
     public function write($item, $value, $environment, $group, $namespace = null)
