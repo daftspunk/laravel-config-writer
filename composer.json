@@ -16,8 +16,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/config": "4.1.x",
-        "october/support": "1.*"
+        "illuminate/config": "4.2.x"
     },
     "autoload": {
         "psr-0": {
