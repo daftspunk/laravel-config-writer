@@ -28,7 +28,7 @@ class FileWriter
     /**
      * The config rewriter object.
      *
-     * @var \October\Rain\Config\Rewriter
+     * @var \October\Rain\Config\Rewrite
      */
     protected $rewriter;
 
@@ -49,17 +49,17 @@ class FileWriter
 
     public function write($item, $value, $environment, $group, $namespace = null)
     {
-        $path = $this->getPath($environment, $group, $namespace);
+        $path = $this->getPath($environment, $group, $item, $namespace);
         if (!$path)
             return false;
 
         $contents = $this->files->get($path);
-        $this->rewriter->toContent($contents, [$item => $value]);
-        $this->files->put($path, $contents);
-        return true;
+        $contents = $this->rewriter->toContent($contents, [$item => $value]);
+
+        return !($this->files->put($path, $contents) === false);
     }
 
-    private function getPath($environment, $group, $namespace = null)
+    private function getPath($environment, $group, $item, $namespace = null)
     {
         $hints = $this->loader->getNamespaces();
 
@@ -75,7 +75,9 @@ class FileWriter
             return null;
 
         $file = "{$path}/{$environment}/{$group}.php";
-        if ($this->files->exists($file))
+        if ( $this->files->exists($file) &&
+             $this->hasKey($file, $item)
+        )
             return $file;
 
         $file = "{$path}/{$group}.php";
@@ -83,5 +85,20 @@ class FileWriter
             return $file;
 
         return null;
+    }
+    
+    private function hasKey($path, $key)
+    {
+        $contents = file_get_contents($path);
+        $vars = eval('?>'.$contents);
+
+        $keys = explode('.', $key);
+
+        $isset = false;
+        while ($key = array_shift($keys)) {
+            $isset = isset($vars[$key]);
+        }
+
+        return $isset;
     }
 }

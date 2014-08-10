@@ -36,6 +36,7 @@ class Rewrite
 
         if ($useValidation) {
             $result = eval('?>'.$contents);
+
                 foreach ($newValues as $key => $expectedValue) {
                     $parts = explode('.', $key);
 
