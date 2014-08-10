@@ -13,13 +13,6 @@ class ConfigServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $app = $this->app;
-        
-        $app->singleton(
-            'Faxbox\Repositories\Permission\PermissionInterface',
-            'Faxbox\Repositories\Permission\PermissionRepository'
-        );
-
         $this->app['config'] = $this->app->share(function($app)
         {
             $loader = $app->getConfigLoader();
