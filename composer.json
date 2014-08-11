@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "October\\Rain\\Config\\": ""
+            "October\\Rain\\Config\\": "src/"
         }
     },
     "minimum-stability": "dev"
