@@ -19,8 +19,8 @@
         "illuminate/config": "4.2.x"
     },
     "autoload": {
-        "psr-0": {
-            "October\\Rain\\Config": ""
+        "psr-4": {
+            "October\\Rain\\Config\\": ""
         }
     },
     "target-dir": "October/Rain/Config",
