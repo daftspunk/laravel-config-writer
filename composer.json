@@ -23,6 +23,5 @@
             "October\\Rain\\Config\\": ""
         }
     },
-    "target-dir": "October/Rain/Config",
     "minimum-stability": "dev"
 }
