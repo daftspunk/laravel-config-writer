@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-0": {
-            "October\\Rain\\Config": "October/Rain/Config/src/"
+            "October\\Rain\\Config": ""
         }
     },
     "target-dir": "October/Rain/Config",
