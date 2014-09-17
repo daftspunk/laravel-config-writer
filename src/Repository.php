@@ -35,7 +35,10 @@ class Repository extends RepositoryBase
     public function write($key, $value)
     {
         list($namespace, $group, $item) = $this->parseKey($key);
-        $this->writer->write($item, $value, $this->environment, $group, $namespace);
+        $result = $this->writer->write($item, $value, $this->environment, $group, $namespace);
+        
+        if(!$result) throw new \Exception('File could not be written to');
+        
         $this->set($key, $value);
     }
 }

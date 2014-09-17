@@ -10,14 +10,10 @@ The following value types are supported for writing: strings, integers and boole
 
 ### Usage Instructions
 
-Swap out the `config` IoC object:
+Add this to ```app/config/app.php``` under the 'providers' key:
 
 ```php
-App::instance('config', function($app){
-    $loader = $app->getConfigLoader();
-    $writer = October\Rain\Config\FileWriter($loader, $app['path'].'/config');
-    return new October\Rain\Config\Repository($loader, $writer, $app['env']);
-})
+'October\Rain\Config\ConfigServiceProvider',
 ```
 
 You can now write to config files:
