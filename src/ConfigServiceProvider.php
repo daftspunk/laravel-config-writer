@@ -17,7 +17,7 @@ class ConfigServiceProvider extends ServiceProvider
         $this->app->bind('October\Rain\Config\Repository', function($app)
         {
             $loader = $app->getConfigLoader();
-            $writer = new FileWriter($loader, $app['path'].'/config');
+            $writer = new FileWriter($loader, $app['path.config']);
             return new Repository($loader, $writer, $app['env']);
         });
         
