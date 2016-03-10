@@ -14,16 +14,18 @@ class ConfigServiceProvider extends ServiceProvider
     public function register()
     {
 
-        $this->app->bind('October\Rain\Config\Repository', function($app)
+        $this->app->bind('October\Rain\Config\Repository', function($app, $items)
         {
-            $loader = $app->getConfigLoader();
-            $writer = new FileWriter($loader, $app['path.config']);
-            return new Repository($loader, $writer, $app['env']);
+            $writer = new FileWriter($app['files'], $app['path.config']);
+            return new Repository($items, $writer);
         });
-        
-        $this->app['config'] = $this->app->share(function($app)
+
+        // Capture the loaded configuration items
+        $config_items = app('config')->all();
+
+        $this->app['config'] = $this->app->share(function($app) use ($config_items)
         {
-            return $app->make('October\Rain\Config\Repository');
+            return $app->make('October\Rain\Config\Repository', $config_items);
         });
     }
 }
