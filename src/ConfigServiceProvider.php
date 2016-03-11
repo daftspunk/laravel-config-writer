@@ -13,8 +13,8 @@ class ConfigServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
-        $this->app->bind('October\Rain\Config\Repository', function($app, $items)
+        // Bind it only once so we can reuse in IoC
+        $this->app->singleton('October\Rain\Config\Repository', function($app, $items)
         {
             $writer = new FileWriter($app['files'], $app['path.config']);
             return new Repository($items, $writer);
