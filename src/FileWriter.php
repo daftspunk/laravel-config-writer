@@ -1,6 +1,6 @@
 <?php namespace October\Rain\Config;
 
-use Illuminate\Config\LoaderInterface;
+use Illuminate\Filesystem\Filesystem;
 
 class FileWriter
 {
@@ -10,13 +10,6 @@ class FileWriter
      * @var \Illuminate\Filesystem\Filesystem
      */
     protected $files;
-
-    /**
-     * The loader implementation.
-     *
-     * @var \Illuminate\Config\LoaderInterface
-     */
-    protected $loader;
 
     /**
      * The default configuration path.
@@ -39,17 +32,16 @@ class FileWriter
      * @param  string  $defaultPath
      * @return void
      */
-    public function __construct(LoaderInterface $loader, $defaultPath)
+    public function __construct(Filesystem $files, $defaultPath)
     {
-        $this->loader = $loader;
-        $this->files = $loader->getFilesystem();
+        $this->files = $files;
         $this->defaultPath = $defaultPath;
         $this->rewriter = new Rewrite;
     }
 
-    public function write($item, $value, $environment, $group, $namespace = null)
+    public function write($item, $value, $filename)
     {
-        $path = $this->getPath($environment, $group, $item, $namespace);
+        $path = $this->getPath($item, $filename);
         if (!$path)
             return false;
 
@@ -59,34 +51,17 @@ class FileWriter
         return !($this->files->put($path, $contents) === false);
     }
 
-    private function getPath($environment, $group, $item, $namespace = null)
+    private function getPath($item, $filename)
     {
-        $hints = $this->loader->getNamespaces();
-
-        $path = null;
-        if (is_null($namespace)) {
-            $path = $this->defaultPath;
-        }
-        elseif (isset($this->hints[$namespace])) {
-            $path = $this->hints[$namespace];
-        }
-
-        if (is_null($path))
-            return null;
-
-        $file = "{$path}/{$environment}/{$group}.php";
+        $file = "{$this->defaultPath}/{$filename}.php";
         if ( $this->files->exists($file) &&
-             $this->hasKey($file, $item)
+            $this->hasKey($file, $item)
         )
-            return $file;
-
-        $file = "{$path}/{$group}.php";
-        if ($this->files->exists($file))
             return $file;
 
         return null;
     }
-    
+
     private function hasKey($path, $key)
     {
         $contents = file_get_contents($path);
@@ -97,6 +72,7 @@ class FileWriter
         $isset = false;
         while ($key = array_shift($keys)) {
             $isset = isset($vars[$key]);
+            if (is_array($vars[$key])) $vars = $vars[$key]; // Go down the rabbit hole
         }
 
         return $isset;
