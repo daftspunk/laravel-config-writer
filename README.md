@@ -6,11 +6,11 @@ This library is an extension of the Config component used by Laravel. It adds th
 
 You can rewrite array values inside a basic configuration file that returns a single array definition (like a Laravel config file) whilst maintaining the file integrity, leaving comments and advanced settings intact.
 
-The following value types are supported for writing: strings, integers and booleans.
+The following value types are supported for writing: strings, integers, booleans and single-dimension arrays.
 
 ### Usage Instructions
 
-Add this to ```app/config/app.php``` under the 'providers' key:
+Add this to `app/config/app.php` under the 'providers' key:
 
 ```php
 'October\Rain\Config\ConfigServiceProvider',
@@ -18,7 +18,7 @@ Add this to ```app/config/app.php``` under the 'providers' key:
 
 You can now write to config files:
 
-```
+```php
 Config::write('app.url', 'http://octobercms.com');
 ```
 
@@ -30,6 +30,9 @@ The `Rewrite` class can be used anywhere.
 $writeConfig = new October\Rain\Config\Rewrite;
 $writeConfig->toFile('path/to/config.php', [
     'item' => 'new value',
-    'nested.config.item' => 'value'
+    'nested.config.item' => 'value',
+    'arrayItem' => ['Single', 'Level', 'Array', 'Values'],
+    'numberItem' => 3,
+    'booleanItem' => true
 ]);
 ```

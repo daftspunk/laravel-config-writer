@@ -5,6 +5,8 @@ use Exception;
 /**
  * Configuration rewriter
  *
+ * https://github.com/daftspunk/laravel-config-writer
+ *
  * This class lets you rewrite array values inside a basic configuration file
  * that returns a single array definition (a Laravel config file) whilst maintaining
  * the integrity of the file, leaving comments and advanced settings intact.
@@ -13,6 +15,8 @@ use Exception;
  * - strings
  * - integers
  * - booleans
+ * - nulls
+ * - single-dimension arrays
  *
  * To do:
  * - When an entry does not exist, provide a way to create it
@@ -34,30 +38,34 @@ class Rewrite
     {
         $contents = $this->parseContent($contents, $newValues);
 
-        if ($useValidation) {
-            $result = eval('?>'.$contents);
+        if (!$useValidation) {
+            return $contents;
+        }
 
-                foreach ($newValues as $key => $expectedValue) {
-                    $parts = explode('.', $key);
+        $result = eval('?>'.$contents);
 
-                    $array = $result;
-                    foreach ($parts as $part) {
-                        if (!is_array($array) || !array_key_exists($part, $array))
-                            throw new Exception(sprintf('Unable to rewrite key "%s" in config, does it exist?', $key));
+        foreach ($newValues as $key => $expectedValue) {
+            $parts = explode('.', $key);
 
-                        $array = $array[$part];
-                    }
-                    $actualValue = $array;
+            $array = $result;
+            foreach ($parts as $part) {
+                if (!is_array($array) || !array_key_exists($part, $array)) {
+                    throw new Exception(sprintf('Unable to rewrite key "%s" in config, does it exist?', $key));
+                }
 
-                if ($actualValue != $expectedValue)
-                    throw new Exception(sprintf('Unable to rewrite key "%s" in config, rewrite failed', $key));
+                $array = $array[$part];
+            }
+            $actualValue = $array;
+
+            if ($actualValue != $expectedValue) {
+                throw new Exception(sprintf('Unable to rewrite key "%s" in config, rewrite failed', $key));
             }
         }
 
         return $contents;
     }
 
-    private function parseContent($contents, $newValues)
+    protected function parseContent($contents, $newValues)
     {
         $patterns = array();
         $replacements = array();
@@ -66,21 +74,7 @@ class Rewrite
             $items = explode('.', $path);
             $key = array_pop($items);
 
-            if (is_string($value) && strpos($value, "'") === false) {
-                $replaceValue = "'".$value."'";
-            }
-            elseif (is_string($value) && strpos($value, '"') === false) {
-                $replaceValue = '"'.$value.'"';
-            }
-            elseif (is_bool($value)) {
-                $replaceValue = ($value ? 'true' : 'false');
-            }
-            elseif (is_null($value)) {
-                $replaceValue = 'null';
-            }
-            else {
-                $replaceValue = $value;
-            }
+            $replaceValue = $this->writeValueToPhp($value);
 
             $patterns[] = $this->buildStringExpression($key, $items);
             $replacements[] = '${1}${2}'.$replaceValue;
@@ -90,12 +84,56 @@ class Rewrite
 
             $patterns[] = $this->buildConstantExpression($key, $items);
             $replacements[] = '${1}${2}'.$replaceValue;
+
+            $patterns[] = $this->buildArrayExpression($key, $items);
+            $replacements[] = '${1}${2}'.$replaceValue;
         }
 
         return preg_replace($patterns, $replacements, $contents, 1);
     }
 
-    private function buildStringExpression($targetKey, $arrayItems = array(), $quoteChar = "'")
+    protected function writeValueToPhp($value)
+    {
+        if (is_string($value) && strpos($value, "'") === false) {
+            $replaceValue = "'".$value."'";
+        }
+        elseif (is_string($value) && strpos($value, '"') === false) {
+            $replaceValue = '"'.$value.'"';
+        }
+        elseif (is_bool($value)) {
+            $replaceValue = ($value ? 'true' : 'false');
+        }
+        elseif (is_null($value)) {
+            $replaceValue = 'null';
+        }
+        elseif (is_array($value) && count($value) === count($value, COUNT_RECURSIVE)) {
+            $replaceValue = $this->writeArrayToPhp($value);
+        }
+        else {
+            $replaceValue = $value;
+        }
+
+        $replaceValue = str_replace('$', '\$', $replaceValue);
+
+        return $replaceValue;
+    }
+
+    protected function writeArrayToPhp($array)
+    {
+        $result = [];
+
+        foreach ($array as $value) {
+            if (!is_array($value)) {
+                $result[] = $this->writeValueToPhp($value);
+            }
+        }
+
+        return '['.implode(', ', $result).']';
+
+        return $result;
+    }
+
+    protected function buildStringExpression($targetKey, $arrayItems = array(), $quoteChar = "'")
     {
         $expression = array();
 
@@ -117,7 +155,7 @@ class Rewrite
     /**
      * Common constants only (true, false, null, integers)
      */
-    private function buildConstantExpression($targetKey, $arrayItems = array())
+    protected function buildConstantExpression($targetKey, $arrayItems = array())
     {
         $expression = array();
 
@@ -133,7 +171,26 @@ class Rewrite
         return '/' . implode('', $expression) . '/';
     }
 
-    private function buildArrayOpeningExpression($arrayItems)
+    /**
+     * Single level arrays only
+     */
+    protected function buildArrayExpression($targetKey, $arrayItems = array())
+    {
+        $expression = array();
+
+        // Opening expression for array items ($1)
+        $expression[] = $this->buildArrayOpeningExpression($arrayItems);
+
+        // The target key opening ($2)
+        $expression[] = '([\'|"]'.$targetKey.'[\'|"]\s*=>\s*)';
+
+        // The target value to be replaced ($3)
+        $expression[] = '(?:[aA][rR]{2}[aA][yY]\(|[\[])([^\]|)]*)[\]|)]';
+
+        return '/' . implode('', $expression) . '/';
+    }
+
+    protected function buildArrayOpeningExpression($arrayItems)
     {
         if (count($arrayItems)) {
             $itemOpen = array();
