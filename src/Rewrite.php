@@ -67,29 +67,38 @@ class Rewrite
 
     protected function parseContent($contents, $newValues)
     {
-        $patterns = array();
-        $replacements = array();
+        $result = $contents;
 
         foreach ($newValues as $path => $value) {
-            $items = explode('.', $path);
-            $key = array_pop($items);
-
-            $replaceValue = $this->writeValueToPhp($value);
-
-            $patterns[] = $this->buildStringExpression($key, $items);
-            $replacements[] = '${1}${2}'.$replaceValue;
-
-            $patterns[] = $this->buildStringExpression($key, $items, '"');
-            $replacements[] = '${1}${2}'.$replaceValue;
-
-            $patterns[] = $this->buildConstantExpression($key, $items);
-            $replacements[] = '${1}${2}'.$replaceValue;
-
-            $patterns[] = $this->buildArrayExpression($key, $items);
-            $replacements[] = '${1}${2}'.$replaceValue;
+            $result = $this->parseContentValue($result, $path, $value);
         }
 
-        return preg_replace($patterns, $replacements, $contents, 1);
+        return $result;
+    }
+
+    protected function parseContentValue($contents, $path, $value)
+    {
+        $result = $contents;
+        $items = explode('.', $path);
+        $key = array_pop($items);
+        $replaceValue = $this->writeValueToPhp($value);
+
+        $count = 0;
+        $patterns = array();
+        $patterns[] = $this->buildStringExpression($key, $items);
+        $patterns[] = $this->buildStringExpression($key, $items, '"');
+        $patterns[] = $this->buildConstantExpression($key, $items);
+        $patterns[] = $this->buildArrayExpression($key, $items);
+
+        foreach ($patterns as $pattern) {
+            $result = preg_replace($pattern, '${1}${2}'.$replaceValue, $result, 1, $count);
+
+            if ($count > 0) {
+                break;
+            }
+        }
+
+        return $result;
     }
 
     protected function writeValueToPhp($value)
