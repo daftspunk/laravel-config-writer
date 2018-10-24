@@ -3,11 +3,11 @@
 namespace Tekreme73\Laravel\ConfigWriter;
 
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\ServiceProvider;
 use Tekreme73\Laravel\ConfigWriter\FileWriter;
 use Tekreme73\Laravel\ConfigWriter\Repository;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
-abstract class AbstractConfigServiceProvider extends ServiceProvider
+class ServiceProvider extends BaseServiceProvider
 {
     /**
      * Register the service provider.
@@ -18,7 +18,7 @@ abstract class AbstractConfigServiceProvider extends ServiceProvider
     {
         // Bind it only once so we can reuse in IoC
         $this->app->singleton($this->repository(), function($app, $items) {
-            $writer = new FileWriter($this->getFilesFrom($app), $this->getConfigPathFrom($app));
+            $writer = new FileWriter($this->getFiles(), $this->getConfigPath());
             return new Repository($writer, $items);
         });
 
@@ -29,12 +29,18 @@ abstract class AbstractConfigServiceProvider extends ServiceProvider
         });
     }
 
-    public function repository(): string
+    public function repository()
     {
-        return 'Tekreme73\Laravel\ConfigWriter\Repository';
+        return Repository::class;
     }
 
-    abstract protected function getFilesFrom($app): Filesystem;
+    protected function getFiles(): Filesystem
+    {
+        return $this->app['files'];
+    }
 
-    abstract protected function getConfigPathFrom($app): string;
+    protected function getConfigPath(): string
+    {
+        return $this->app['path.config'];
+    }
 }
