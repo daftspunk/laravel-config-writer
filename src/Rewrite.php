@@ -1,4 +1,6 @@
-<?php namespace Tekreme73\Laravel\ConfigWriter;
+<?php
+
+namespace Tekreme73\Laravel\ConfigWriter;
 
 use Exception;
 
@@ -91,7 +93,7 @@ class Rewrite
         $patterns[] = $this->buildArrayExpression($key, $items);
 
         foreach ($patterns as $pattern) {
-            $result = preg_replace($pattern, '${1}${2}'.$replaceValue, $result, 1, $count);
+            $result = preg_replace($pattern, '${1}${2}' . $replaceValue, $result, 1, $count);
 
             if ($count > 0) {
                 break;

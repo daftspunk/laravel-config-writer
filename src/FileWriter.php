@@ -1,4 +1,6 @@
-<?php namespace Tekreme73\Laravel\ConfigWriter;
+<?php
+
+namespace Tekreme73\Laravel\ConfigWriter;
 
 use Illuminate\Filesystem\Filesystem;
 
@@ -28,8 +30,8 @@ class FileWriter
     /**
      * Create a new file configuration loader.
      *
-     * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @param  string  $defaultPath
+     * @param  \Illuminate\Filesystem\Filesystem $files
+     * @param  string $defaultPath
      * @return void
      */
     public function __construct(Filesystem $files, $defaultPath)
@@ -54,10 +56,10 @@ class FileWriter
     private function getPath($item, $filename)
     {
         $file = "{$this->defaultPath}/{$filename}.php";
-        if ( $this->files->exists($file) &&
-            $this->hasKey($file, $item)
-        )
+
+        if ($this->files->exists($file) && $this->hasKey($file, $item)) {
             return $file;
+        }
 
         return null;
     }
@@ -72,7 +74,7 @@ class FileWriter
         $isset = false;
         while ($key = array_shift($keys)) {
             $isset = isset($vars[$key]);
-            if (is_array($vars[$key])) $vars = $vars[$key]; // Go down the rabbit hole
+            if (is_array($vars[$key])) $vars = $vars[$key];
         }
 
         return $isset;

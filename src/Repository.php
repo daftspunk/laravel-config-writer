@@ -1,4 +1,6 @@
-<?php namespace Tekreme73\Laravel\ConfigWriter;
+<?php
+
+namespace Tekreme73\Laravel\ConfigWriter;
 
 use Illuminate\Config\Repository as RepositoryBase;
 
@@ -14,7 +16,7 @@ class Repository extends RepositoryBase
     /**
      * Create a new configuration repository.
      *
-     * @param  array  $items
+     * @param  array $items
      * @param  FileWriter $writer
      * @return void
      */

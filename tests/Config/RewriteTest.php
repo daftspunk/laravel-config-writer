@@ -13,7 +13,7 @@ class RewriteTest extends TestCase
         $tmpFile = __DIR__ . '../../fixtures/Config/temp-config.php';
         copy($filePath, $tmpFile);
 
-        $contents = $writer->toFile($tmpFile, ['connections.sqlite.driver'=>'sqlbite']);
+        $contents = $writer->toFile($tmpFile, ['connections.sqlite.driver' => 'sqlbite']);
 
         $result = include $tmpFile;
         $this->assertArrayHasKey('connections', $result);
