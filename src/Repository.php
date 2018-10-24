@@ -3,8 +3,8 @@
 namespace Tekreme73\Laravel\ConfigWriter;
 
 use Exception;
-use Tekreme73\Laravel\ConfigWriter\FileWriter;
 use Illuminate\Config\Repository as RepositoryBase;
+use Tekreme73\Laravel\ConfigWriter\DataWriter\FileWriter;
 
 class Repository extends RepositoryBase
 {

@@ -3,8 +3,8 @@
 namespace Tekreme73\Laravel\ConfigWriter;
 
 use Illuminate\Filesystem\Filesystem;
-use Tekreme73\Laravel\ConfigWriter\FileWriter;
 use Tekreme73\Laravel\ConfigWriter\Repository;
+use Tekreme73\Laravel\ConfigWriter\DataWriter\FileWriter;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider

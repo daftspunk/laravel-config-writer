@@ -1,6 +1,6 @@
 <?php
 
-namespace Tekreme73\Laravel\ConfigWriter;
+namespace Tekreme73\Laravel\ConfigWriter\DataWriter;
 
 use Illuminate\Filesystem\Filesystem;
 use Tekreme73\Laravel\ConfigWriter\Rewrite;
