@@ -18,7 +18,7 @@ class ConfigServiceProvider extends ServiceProvider
         // Bind it only once so we can reuse in IoC
         $this->app->singleton('Tekreme73\Laravel\ConfigWriter\Repository', function($app, $items) {
             $writer = new FileWriter($app['files'], $app['path.config']);
-            return new Repository($items, $writer);
+            return new Repository($writer, $items);
         });
 
         $this->app->extend('config', function($config, $app) {
