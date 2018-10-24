@@ -1,4 +1,4 @@
-<?php namespace October\Rain\Config;
+<?php namespace Tekreme73\Laravel\ConfigWriter;
 
 use Illuminate\Filesystem\Filesystem;
 
@@ -21,7 +21,7 @@ class FileWriter
     /**
      * The config rewriter object.
      *
-     * @var \October\Rain\Config\Rewrite
+     * @var \Tekreme73\Laravel\ConfigWriter\Rewrite
      */
     protected $rewriter;
 

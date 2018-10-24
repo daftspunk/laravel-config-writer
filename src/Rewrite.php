@@ -1,4 +1,4 @@
-<?php namespace October\Rain\Config;
+<?php namespace Tekreme73\Laravel\ConfigWriter;
 
 use Exception;
 

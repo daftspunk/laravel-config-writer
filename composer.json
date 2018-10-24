@@ -1,17 +1,12 @@
 {
-    "name": "october/config",
-    "description": "Configuration extension",
-    "homepage": "http://octobercms.com",
-    "keywords": ["october cms", "october", "laravel", "config", "write"],
+    "name": "tekreme73/laravel-config-writer",
+    "description": "Laravel provider to be able to rewrite configuration",
+    "keywords": ["laravel", "config", "write", "provider"],
     "license": "MIT",
     "authors": [
         {
-            "name": "Alexey Bobkov",
-            "email": "aleksey.bobkov@gmail.com"
-        },
-        {
-            "name": "Samuel Georges",
-            "email": "daftspunky@gmail.com"
+            "name": "Rémi Rebillard",
+            "email": "tekreme73@gmail.com"
         }
     ],
     "require": {
@@ -20,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "October\\Rain\\Config\\": "src/"
+            "Tekreme73\\Laravel\\ConfigWriter\\": "src/"
         }
     },
     "minimum-stability": "dev"
