@@ -2,6 +2,8 @@
 
 namespace Tekreme73\Laravel\ConfigWriter;
 
+use Exception;
+use Tekreme73\Laravel\ConfigWriter\FileWriter;
 use Illuminate\Config\Repository as RepositoryBase;
 
 class Repository extends RepositoryBase
@@ -9,18 +11,18 @@ class Repository extends RepositoryBase
     /**
      * The config rewriter object.
      *
-     * @var string
+     * @var Tekreme73\Laravel\ConfigWriter\FileWriter
      */
     protected $writer;
 
     /**
      * Create a new configuration repository.
      *
+     * @param  Tekreme73\Laravel\ConfigWriter\FileWriter $writer
      * @param  array $items
-     * @param  FileWriter $writer
      * @return void
      */
-    public function __construct($items = array(), $writer)
+    public function __construct(FileWriter $writer, array $items = [])
     {
         $this->writer = $writer;
         parent::__construct($items);
@@ -31,24 +33,27 @@ class Repository extends RepositoryBase
      *
      * @param string $key
      * @param mixed $value
-     * @return void
+     * @return boolean
      */
-    public function write($key, $value)
+    public function write(string $key, $value): boolean
     {
         list($filename, $item) = $this->parseKey($key);
         $result = $this->writer->write($item, $value, $filename);
 
-        if(!$result) throw new \Exception('File could not be written to');
+        if(!$result) throw new Exception('File could not be written to');
 
         $this->set($key, $value);
+
+        return $result;
     }
 
     /**
      * Split key into 2 parts. The first part will be the filename
-     * @param $key
+     * 
+     * @param string $key
      * @return array
      */
-    private function parseKey($key)
+    private function parseKey(string $key): array
     {
         return preg_split('/\./', $key, 2);
     }

@@ -3,6 +3,7 @@
 namespace Tekreme73\Laravel\ConfigWriter;
 
 use Illuminate\Filesystem\Filesystem;
+use Tekreme73\Laravel\ConfigWriter\Rewrite;
 
 class FileWriter
 {
@@ -34,16 +35,24 @@ class FileWriter
      * @param  string $defaultPath
      * @return void
      */
-    public function __construct(Filesystem $files, $defaultPath)
+    public function __construct(Filesystem $files, string $defaultPath)
     {
         $this->files = $files;
         $this->defaultPath = $defaultPath;
         $this->rewriter = new Rewrite;
     }
 
-    public function write($item, $value, $filename)
+    /**
+     * Write an item value in a file.
+     *
+     * @param  string $item
+     * @param  mixed $value
+     * @param  string $filename
+     * @return boolean
+     */
+    public function write(string $item, $value, string $filename, string $fileExtension = '.php'): boolean
     {
-        $path = $this->getPath($item, $filename);
+        $path = $this->getPath($item, $filename, $fileExtension);
         if (!$path)
             return false;
 
@@ -53,9 +62,9 @@ class FileWriter
         return !($this->files->put($path, $contents) === false);
     }
 
-    private function getPath($item, $filename)
+    private function getPath(string $item, string $filename, string $ext = '.php'): string
     {
-        $file = "{$this->defaultPath}/{$filename}.php";
+        $file = "{$this->defaultPath}/{$filename}{$ext}";
 
         if ($this->files->exists($file) && $this->hasKey($file, $item)) {
             return $file;
@@ -64,7 +73,7 @@ class FileWriter
         return null;
     }
 
-    private function hasKey($path, $key)
+    private function hasKey(string $path, string $key): boolean
     {
         $contents = file_get_contents($path);
         $vars = eval('?>'.$contents);
