@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Tekreme73\Laravel\ConfigWriter\FileWriter;
 use Tekreme73\Laravel\ConfigWriter\Repository;
 
-class ConfigServiceProvider extends ServiceProvider
+abstract class AbstractConfigServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
@@ -33,13 +33,7 @@ class ConfigServiceProvider extends ServiceProvider
         return 'Tekreme73\Laravel\ConfigWriter\Repository';
     }
 
-    protected function getFilesFrom($app): Filesystem
-    {
-        return $app['files'];
-    }
+    abstract protected function getFilesFrom($app): Filesystem;
 
-    protected function getConfigPathFrom($app): string
-    {
-        return $app['path.config'];
-    }
+    abstract protected function getConfigPathFrom($app): string;
 }
