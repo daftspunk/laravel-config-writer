@@ -2,6 +2,7 @@
 
 namespace Tekreme73\Laravel\ConfigWriter;
 
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
 use Tekreme73\Laravel\ConfigWriter\FileWriter;
 use Tekreme73\Laravel\ConfigWriter\Repository;
