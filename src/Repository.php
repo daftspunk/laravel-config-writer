@@ -24,8 +24,8 @@ class Repository extends RepositoryBase
      */
     public function __construct(FileWriter $writer, array $items = [])
     {
-        $this->writer = $writer;
         parent::__construct($items);
+        $this->writer = $writer;
     }
 
     /**
