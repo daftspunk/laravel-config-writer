@@ -16,15 +16,30 @@ class ConfigServiceProvider extends ServiceProvider
     public function register()
     {
         // Bind it only once so we can reuse in IoC
-        $this->app->singleton('Tekreme73\Laravel\ConfigWriter\Repository', function($app, $items) {
-            $writer = new FileWriter($app['files'], $app['path.config']);
+        $this->app->singleton($this->repository(), function($app, $items) {
+            $writer = new FileWriter($this->getFilesFrom($app), $this->getConfigPathFrom($app));
             return new Repository($writer, $items);
         });
 
         $this->app->extend('config', function($config, $app) {
             // Capture the loaded configuration items
             $config_items = $config->all();
-            return $app->make('Tekreme73\Laravel\ConfigWriter\Repository', $config_items);
+            return $app->make($this->repository(), $config_items);
         });
+    }
+
+    public function repository(): string
+    {
+        return 'Tekreme73\Laravel\ConfigWriter\Repository';
+    }
+
+    protected function getFilesFrom($app): Filesystem
+    {
+        return $app['files'];
+    }
+
+    protected function getConfigPathFrom($app): string
+    {
+        return $app['path.config'];
     }
 }
