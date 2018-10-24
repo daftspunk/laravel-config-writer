@@ -1,4 +1,4 @@
-## Laravel Config Writer
+# Laravel Config Writer
 
 Write to Laravel Config files and maintain file integrity.
 
@@ -10,21 +10,34 @@ The following value types are supported for writing: strings, integers, booleans
 
 Fork of `octobercms\laravel-config-writer`.
 
-### Usage Instructions
+## Support
+
+This provider is designed to be used in Laravel from `5.4` version.
+
+## Usage
+
+Install through composer:
+```
+composer require "tekreme73/laravel-config-writer"
+```
+
+### Standard usage
 
 Add this to `app/config/app.php` under the 'providers' key:
 
 ```php
-'Tekreme73\Laravel\ConfigWriter\ConfigServiceProvider',
+Tekreme73\Laravel\ConfigWriter\ConfigServiceProvider::class,
 ```
 
 You can now write to config files:
 
 ```php
 Config::write('app.url', 'http://domain.com');
+
+app('config')->write(['app.url' => 'http://domain.com']);
 ```
 
-### Usage outside Laravel
+### Outside Laravel
 
 The `Rewrite` class can be used anywhere.
 

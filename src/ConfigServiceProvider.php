@@ -19,10 +19,9 @@ class ConfigServiceProvider extends ServiceProvider
             return new Repository($items, $writer);
         });
 
-        // Capture the loaded configuration items
-        $config_items = app('config')->all();
-
-        $this->app['config'] = $this->app->share(function($app) use ($config_items) {
+        $this->app->extend('config', function($config, $app) {
+            // Capture the loaded configuration items
+            $config_items = $config->all();
             return $app->make('Tekreme73\Laravel\ConfigWriter\Repository', $config_items);
         });
     }
