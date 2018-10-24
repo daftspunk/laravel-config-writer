@@ -14,35 +14,44 @@ Fork of `octobercms\laravel-config-writer`.
 
 This provider is designed to be used in Laravel from `5.4` version.
 
-## Usage
+## Setup
 
 Install through composer:
 ```
 composer require "tekreme73/laravel-config-writer"
 ```
 
-### Standard usage
-
 Add this to `app/config/app.php` under the 'providers' key:
 
 ```php
-Tekreme73\Laravel\ConfigWriter\ConfigServiceProvider::class,
+Tekreme73\Laravel\ConfigWriter\ServiceProvider::class,
 ```
 
-You can now write to config files:
+### Lumen case
+
+Add this to `bootstrap/app.php` in the 'service providers' section declaration:
+
+```php
+$app->register(Tekreme73\Laravel\ConfigWriter\ServiceProvider::class);
+```
+
+## Usage
+
+You can write to config files like this:
 
 ```php
 Config::write('app.url', 'http://domain.com');
 
-app('config')->write(['app.url' => 'http://domain.com']);
+app('config')->write('app.url', 'http://domain.com');
 ```
+
 
 ### Outside Laravel
 
 The `Rewrite` class can be used anywhere.
 
 ```php
-$writeConfig = new Tekreme73\Laravel\ConfigWriter\Rewrite;
+$writeConfig = new Tekreme73\Laravel\ConfigWriter\DataWriter\Rewrite;
 $writeConfig->toFile('path/to/config.php', [
     'item' => 'new value',
     'nested.config.item' => 'value',
