@@ -33,6 +33,7 @@ class Rewrite
         $contents = file_get_contents($filePath);
         $contents = $this->toContent($contents, $newValues, $useValidation);
         file_put_contents($filePath, $contents);
+
         return $contents;
     }
 

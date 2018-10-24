@@ -53,8 +53,8 @@ class FileWriter
     public function write(string $item, $value, string $filename, string $fileExtension = '.php'): boolean
     {
         $path = $this->getPath($item, $filename, $fileExtension);
-        if (!$path)
-            return false;
+
+        if (!$path) return false;
 
         $contents = $this->files->get($path);
         $contents = $this->rewriter->toContent($contents, [$item => $value]);
