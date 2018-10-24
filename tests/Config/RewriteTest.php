@@ -1,5 +1,6 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Tekreme73\Laravel\ConfigWriter\Rewrite;
 
 class RewriteTest extends TestCase
