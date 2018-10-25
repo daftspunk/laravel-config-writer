@@ -3,7 +3,7 @@
 namespace Tekreme73\Laravel\ConfigWriter\DataWriter;
 
 use Illuminate\Filesystem\Filesystem;
-use Tekreme73\Laravel\ConfigWriter\Rewrite;
+use Tekreme73\Laravel\ConfigWriter\DataWriter\Rewrite;
 
 class FileWriter
 {
@@ -24,7 +24,7 @@ class FileWriter
     /**
      * The config rewriter object.
      *
-     * @var \Tekreme73\Laravel\ConfigWriter\Rewrite
+     * @var \Tekreme73\Laravel\ConfigWriter\DataWriter\Rewrite
      */
     protected $rewriter;
 
