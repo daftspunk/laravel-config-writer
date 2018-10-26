@@ -33,9 +33,9 @@ class Repository extends RepositoryBase
      *
      * @param string $key
      * @param mixed $value
-     * @return boolean
+     * @return bool
      */
-    public function write(string $key, $value): boolean
+    public function write(string $key, $value): bool
     {
         list($filename, $item) = $this->parseKey($key);
         $result = $this->writer->write($item, $value, $filename);

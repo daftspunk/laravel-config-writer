@@ -48,9 +48,9 @@ class FileWriter
      * @param  string $item
      * @param  mixed $value
      * @param  string $filename
-     * @return boolean
+     * @return bool
      */
-    public function write(string $item, $value, string $filename, string $fileExtension = '.php'): boolean
+    public function write(string $item, $value, string $filename, string $fileExtension = '.php'): bool
     {
         $path = $this->getPath($item, $filename, $fileExtension);
 
@@ -73,7 +73,7 @@ class FileWriter
         return null;
     }
 
-    private function hasKey(string $path, string $key): boolean
+    private function hasKey(string $path, string $key): bool
     {
         $contents = file_get_contents($path);
         $vars = eval('?>'.$contents);
