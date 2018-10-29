@@ -212,7 +212,7 @@ class Rewrite
             }
 
             // Capture all opening array (non greedy)
-            $result = '(' . implode('[\s\S]*', $itemOpen) . '[\s\S]*?)';
+            $result = '(' . implode('[\s\S]*?', $itemOpen) . '[\s\S]*?)';
         }
         else {
             // Gotta capture something for $1
