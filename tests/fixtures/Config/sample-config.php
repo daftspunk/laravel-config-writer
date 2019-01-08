@@ -15,9 +15,9 @@ return array(
 
     'debug' => true,
 
-    "debugAgain"  =>  FALSE ,
+    'debugAgain' => FALSE,
 
-    "bullyIan" => 0,
+    'bullyIan' => 0,
 
     'booLeeIan' => 1,
 
@@ -47,9 +47,9 @@ return array(
     |
     */
 
-    'timezone' => "October's time",
+    'timezone' => 'October\'s time',
 
-    "timezoneAgain"               =>         'Something "else"'         ,
+    'timezoneAgain' => 'Something "else"',
 
     /*
     |--------------------------------------------------------------------------
@@ -67,16 +67,16 @@ return array(
     |
     */
 
-    'connections' => array(
+    'connections' => [
 
-        'sqlite' => array(
+        'sqlite' => [
             'driver'   => 'sqlite',
             'database' => __DIR__.'/../database/production.sqlite',
             'prefix'   => '',
-        ),
+        ],
 
-        'mysql' => array(
-            'driver'    => array('rabble' => 'mysql'),
+        'mysql' => [
+            'driver'    => ['rabble' => 'mysql'],
             'host'      => 'localhost',
             'database'  => 'database',
             'username'  => 'root',
@@ -84,9 +84,9 @@ return array(
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
-        ),
+        ],
 
-        'pgsql' => array(
+        'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => 'localhost',
             'database' => 'database',
@@ -95,18 +95,18 @@ return array(
             'charset'  => 'utf8',
             'prefix'   => '',
             'schema'   => 'public',
-        ),
+        ],
 
-        'sqlsrv' => array(
+        'sqlsrv' => [
             'driver'   => 'sqlsrv',
             'host'     => 'localhost',
             'database' => 'database',
             'username' => 'root',
             'password' => '',
             'prefix'   => '',
-        ),
+        ],
 
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -119,5 +119,9 @@ return array(
     |
     */
 
-    'memcached' => array('host' => '127.0.0.1', 'port' => 11211, 'weight' => true),
+    'memcached' => [
+        'host'   => '127.0.0.1',
+        'port'   => 11211,
+        'weight' => true,
+    ],
 );

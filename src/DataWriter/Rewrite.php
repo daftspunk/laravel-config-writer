@@ -1,4 +1,6 @@
-<?php namespace October\Rain\Config;
+<?php
+
+namespace Tekreme73\Laravel\ConfigWriter\DataWriter;
 
 use Exception;
 
@@ -26,15 +28,16 @@ use Exception;
 class Rewrite
 {
 
-    public function toFile($filePath, $newValues, $useValidation = true)
+    public function toFile(string $filePath, array $newValues, bool $useValidation = true): string
     {
         $contents = file_get_contents($filePath);
         $contents = $this->toContent($contents, $newValues, $useValidation);
         file_put_contents($filePath, $contents);
+
         return $contents;
     }
 
-    public function toContent($contents, $newValues, $useValidation = true)
+    public function toContent(string $contents, array $newValues, bool $useValidation = true): string
     {
         $contents = $this->parseContent($contents, $newValues);
 
@@ -65,7 +68,7 @@ class Rewrite
         return $contents;
     }
 
-    protected function parseContent($contents, $newValues)
+    protected function parseContent(string $contents, array $newValues): string
     {
         $result = $contents;
 
@@ -76,7 +79,7 @@ class Rewrite
         return $result;
     }
 
-    protected function parseContentValue($contents, $path, $value)
+    protected function parseContentValue(string $contents, string $path, $value): string
     {
         $result = $contents;
         $items = explode('.', $path);
@@ -84,14 +87,14 @@ class Rewrite
         $replaceValue = $this->writeValueToPhp($value);
 
         $count = 0;
-        $patterns = array();
+        $patterns = [];
         $patterns[] = $this->buildStringExpression($key, $items);
         $patterns[] = $this->buildStringExpression($key, $items, '"');
         $patterns[] = $this->buildConstantExpression($key, $items);
         $patterns[] = $this->buildArrayExpression($key, $items);
 
         foreach ($patterns as $pattern) {
-            $result = preg_replace($pattern, '${1}${2}'.$replaceValue, $result, 1, $count);
+            $result = preg_replace($pattern, '${1}${2}' . $replaceValue, $result, 1, $count);
 
             if ($count > 0) {
                 break;
@@ -101,7 +104,7 @@ class Rewrite
         return $result;
     }
 
-    protected function writeValueToPhp($value)
+    protected function writeValueToPhp($value): string
     {
         if (is_string($value) && strpos($value, "'") === false) {
             $replaceValue = "'".$value."'";
@@ -127,7 +130,7 @@ class Rewrite
         return $replaceValue;
     }
 
-    protected function writeArrayToPhp($array)
+    protected function writeArrayToPhp(array $array): array
     {
         $result = [];
 
@@ -142,9 +145,9 @@ class Rewrite
         return $result;
     }
 
-    protected function buildStringExpression($targetKey, $arrayItems = array(), $quoteChar = "'")
+    protected function buildStringExpression(string $targetKey, array $arrayItems = [], string $quoteChar = "'"): string
     {
-        $expression = array();
+        $expression = [];
 
         // Opening expression for array items ($1)
         $expression[] = $this->buildArrayOpeningExpression($arrayItems);
@@ -164,9 +167,9 @@ class Rewrite
     /**
      * Common constants only (true, false, null, integers)
      */
-    protected function buildConstantExpression($targetKey, $arrayItems = array())
+    protected function buildConstantExpression(string $targetKey, array $arrayItems = []): string
     {
-        $expression = array();
+        $expression = [];
 
         // Opening expression for array items ($1)
         $expression[] = $this->buildArrayOpeningExpression($arrayItems);
@@ -183,9 +186,9 @@ class Rewrite
     /**
      * Single level arrays only
      */
-    protected function buildArrayExpression($targetKey, $arrayItems = array())
+    protected function buildArrayExpression(string $targetKey, array $arrayItems = []): string
     {
-        $expression = array();
+        $expression = [];
 
         // Opening expression for array items ($1)
         $expression[] = $this->buildArrayOpeningExpression($arrayItems);
@@ -199,17 +202,17 @@ class Rewrite
         return '/' . implode('', $expression) . '/';
     }
 
-    protected function buildArrayOpeningExpression($arrayItems)
+    protected function buildArrayOpeningExpression(array $arrayItems): string
     {
         if (count($arrayItems)) {
-            $itemOpen = array();
+            $itemOpen = [];
             foreach ($arrayItems as $item) {
                 // The left hand array assignment
                 $itemOpen[] = '[\'|"]'.$item.'[\'|"]\s*=>\s*(?:[aA][rR]{2}[aA][yY]\(|[\[])';
             }
 
             // Capture all opening array (non greedy)
-            $result = '(' . implode('[\s\S]*', $itemOpen) . '[\s\S]*?)';
+            $result = '(' . implode('[\s\S]*?', $itemOpen) . '[\s\S]*?)';
         }
         else {
             // Gotta capture something for $1

@@ -1,6 +1,7 @@
 <?php
 
-use October\Rain\Config\Rewrite;
+use PHPUnit\Framework\TestCase;
+use Tekreme73\Laravel\ConfigWriter\DataWriter\Rewrite;
 
 class RewriteTest extends TestCase
 {
@@ -13,7 +14,7 @@ class RewriteTest extends TestCase
         $tmpFile = __DIR__ . '../../fixtures/Config/temp-config.php';
         copy($filePath, $tmpFile);
 
-        $contents = $writer->toFile($tmpFile, ['connections.sqlite.driver'=>'sqlbite']);
+        $contents = $writer->toFile($tmpFile, ['connections.sqlite.driver' => 'sqlbite']);
 
         $result = include $tmpFile;
         $this->assertArrayHasKey('connections', $result);
@@ -95,7 +96,7 @@ class RewriteTest extends TestCase
         $this->assertArrayHasKey('memcached', $result);
         $this->assertArrayHasKey('weight', $result['memcached']);
         $this->assertFalse($result['memcached']['weight']);
-        
+
         $this->assertArrayHasKey('connections', $result);
         $this->assertArrayHasKey('pgsql', $result['connections']);
         $this->assertArrayHasKey('password', $result['connections']['pgsql']);

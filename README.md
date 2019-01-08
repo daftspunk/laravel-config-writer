@@ -1,4 +1,4 @@
-## Laravel Config Writer
+# Laravel Config Writer
 
 Write to Laravel Config files and maintain file integrity.
 
@@ -8,26 +8,50 @@ You can rewrite array values inside a basic configuration file that returns a si
 
 The following value types are supported for writing: strings, integers, booleans and single-dimension arrays.
 
-### Usage Instructions
+Fork of `octobercms\laravel-config-writer`.
+
+## Support
+
+This provider is designed to be used in Laravel from `5.4` version.
+
+## Setup
+
+Install through composer:
+```
+composer require "tekreme73/laravel-config-writer"
+```
 
 Add this to `app/config/app.php` under the 'providers' key:
 
 ```php
-'October\Rain\Config\ConfigServiceProvider',
+Tekreme73\Laravel\ConfigWriter\ServiceProvider::class,
 ```
 
-You can now write to config files:
+### Lumen case
+
+Add this to `bootstrap/app.php` in the 'service providers' section declaration:
 
 ```php
-Config::write('app.url', 'http://octobercms.com');
+$app->register(Tekreme73\Laravel\ConfigWriter\ServiceProvider::class);
 ```
 
-### Usage outside Laravel
+## Usage
+
+You can write to config files like this:
+
+```php
+Config::write('app.url', 'http://domain.com');
+
+app('config')->write('app.url', 'http://domain.com');
+```
+
+
+### Outside Laravel
 
 The `Rewrite` class can be used anywhere.
 
 ```php
-$writeConfig = new October\Rain\Config\Rewrite;
+$writeConfig = new Tekreme73\Laravel\ConfigWriter\DataWriter\Rewrite;
 $writeConfig->toFile('path/to/config.php', [
     'item' => 'new value',
     'nested.config.item' => 'value',

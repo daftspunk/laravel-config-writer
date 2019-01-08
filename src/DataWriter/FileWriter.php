@@ -1,6 +1,9 @@
-<?php namespace October\Rain\Config;
+<?php
+
+namespace Tekreme73\Laravel\ConfigWriter\DataWriter;
 
 use Illuminate\Filesystem\Filesystem;
+use Tekreme73\Laravel\ConfigWriter\DataWriter\Rewrite;
 
 class FileWriter
 {
@@ -21,29 +24,37 @@ class FileWriter
     /**
      * The config rewriter object.
      *
-     * @var \October\Rain\Config\Rewrite
+     * @var \Tekreme73\Laravel\ConfigWriter\DataWriter\Rewrite
      */
     protected $rewriter;
 
     /**
      * Create a new file configuration loader.
      *
-     * @param  \Illuminate\Filesystem\Filesystem  $files
-     * @param  string  $defaultPath
+     * @param  \Illuminate\Filesystem\Filesystem $files
+     * @param  string $defaultPath
      * @return void
      */
-    public function __construct(Filesystem $files, $defaultPath)
+    public function __construct(Filesystem $files, string $defaultPath)
     {
         $this->files = $files;
         $this->defaultPath = $defaultPath;
         $this->rewriter = new Rewrite;
     }
 
-    public function write($item, $value, $filename)
+    /**
+     * Write an item value in a file.
+     *
+     * @param  string $item
+     * @param  mixed $value
+     * @param  string $filename
+     * @return bool
+     */
+    public function write(string $item, $value, string $filename, string $fileExtension = '.php'): bool
     {
-        $path = $this->getPath($item, $filename);
-        if (!$path)
-            return false;
+        $path = $this->getPath($item, $filename, $fileExtension);
+
+        if (!$path) return false;
 
         $contents = $this->files->get($path);
         $contents = $this->rewriter->toContent($contents, [$item => $value]);
@@ -51,18 +62,18 @@ class FileWriter
         return !($this->files->put($path, $contents) === false);
     }
 
-    private function getPath($item, $filename)
+    private function getPath(string $item, string $filename, string $ext = '.php'): string
     {
-        $file = "{$this->defaultPath}/{$filename}.php";
-        if ( $this->files->exists($file) &&
-            $this->hasKey($file, $item)
-        )
+        $file = "{$this->defaultPath}/{$filename}{$ext}";
+
+        if ($this->files->exists($file) && $this->hasKey($file, $item)) {
             return $file;
+        }
 
         return null;
     }
 
-    private function hasKey($path, $key)
+    private function hasKey(string $path, string $key): bool
     {
         $contents = file_get_contents($path);
         $vars = eval('?>'.$contents);
@@ -72,7 +83,7 @@ class FileWriter
         $isset = false;
         while ($key = array_shift($keys)) {
             $isset = isset($vars[$key]);
-            if (is_array($vars[$key])) $vars = $vars[$key]; // Go down the rabbit hole
+            if (is_array($vars[$key])) $vars = $vars[$key];
         }
 
         return $isset;
