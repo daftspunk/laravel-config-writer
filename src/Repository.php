@@ -1,24 +1,24 @@
 <?php
 
-namespace Tekreme73\Laravel\ConfigWriter;
+namespace October\Rain\Config;
 
 use Exception;
+use October\Rain\Config\DataWriter\FileWriter;
 use Illuminate\Config\Repository as RepositoryBase;
-use Tekreme73\Laravel\ConfigWriter\DataWriter\FileWriter;
 
 class Repository extends RepositoryBase
 {
     /**
      * The config rewriter object.
      *
-     * @var Tekreme73\Laravel\ConfigWriter\FileWriter
+     * @var October\Rain\Config\FileWriter
      */
     protected $writer;
 
     /**
      * Create a new configuration repository.
      *
-     * @param  Tekreme73\Laravel\ConfigWriter\FileWriter $writer
+     * @param  October\Rain\Config\FileWriter $writer
      * @param  array $items
      * @return void
      */

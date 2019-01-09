@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use Tekreme73\Laravel\ConfigWriter\DataWriter\Rewrite;
+use October\Rain\Config\DataWriter\Rewrite;
 
 class RewriteTest extends TestCase
 {
