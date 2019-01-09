@@ -1,6 +1,6 @@
 <?php
 
-namespace Tekreme73\Laravel\ConfigWriter\DataWriter;
+namespace October\Rain\Config\DataWriter;
 
 use Exception;
 

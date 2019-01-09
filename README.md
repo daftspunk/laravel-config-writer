@@ -8,8 +8,6 @@ You can rewrite array values inside a basic configuration file that returns a si
 
 The following value types are supported for writing: strings, integers, booleans and single-dimension arrays.
 
-Fork of `octobercms\laravel-config-writer`.
-
 ## Support
 
 This provider is designed to be used in Laravel from `5.4` version.
@@ -18,13 +16,13 @@ This provider is designed to be used in Laravel from `5.4` version.
 
 Install through composer:
 ```
-composer require "tekreme73/laravel-config-writer"
+composer require "daftspunk/laravel-config-writer"
 ```
 
 Add this to `app/config/app.php` under the 'providers' key:
 
 ```php
-Tekreme73\Laravel\ConfigWriter\ServiceProvider::class,
+October\Rain\Config\ServiceProvider::class,
 ```
 
 ### Lumen case
@@ -32,7 +30,7 @@ Tekreme73\Laravel\ConfigWriter\ServiceProvider::class,
 Add this to `bootstrap/app.php` in the 'service providers' section declaration:
 
 ```php
-$app->register(Tekreme73\Laravel\ConfigWriter\ServiceProvider::class);
+$app->register(October\Rain\Config\ServiceProvider::class);
 ```
 
 ## Usage
@@ -51,7 +49,7 @@ app('config')->write('app.url', 'http://domain.com');
 The `Rewrite` class can be used anywhere.
 
 ```php
-$writeConfig = new Tekreme73\Laravel\ConfigWriter\DataWriter\Rewrite;
+$writeConfig = new October\Rain\Config\DataWriter\Rewrite;
 $writeConfig->toFile('path/to/config.php', [
     'item' => 'new value',
     'nested.config.item' => 'value',

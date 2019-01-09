@@ -1,10 +1,10 @@
 <?php
 
-namespace Tekreme73\Laravel\ConfigWriter;
+namespace October\Rain\Config;
 
+use October\Rain\Config\Repository;
 use Illuminate\Filesystem\Filesystem;
-use Tekreme73\Laravel\ConfigWriter\Repository;
-use Tekreme73\Laravel\ConfigWriter\DataWriter\FileWriter;
+use October\Rain\Config\DataWriter\FileWriter;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider

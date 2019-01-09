@@ -1,9 +1,9 @@
 <?php
 
-namespace Tekreme73\Laravel\ConfigWriter;
+namespace October\Rain\Config;
 
 use Laravel\Lumen\Application;
-use Tekreme73\Laravel\ConfigWriter\ServiceProvider;
+use October\Rain\Config\ServiceProvider;
 
 class LumenServiceProvider extends ServiceProvider
 {
