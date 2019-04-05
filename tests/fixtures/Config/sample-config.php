@@ -15,7 +15,7 @@ return array(
 
     'debug' => true,
 
-    'debugAgain' => FALSE,
+    'debugAgain' => false,
 
     'bullyIan' => 0,
 
