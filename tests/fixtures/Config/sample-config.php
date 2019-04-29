@@ -23,6 +23,14 @@ return array(
 
     'aNumber' => 55,
 
+    'envMethod' => env('___KEY_FOR_ENV___', "unknown fallback value"),
+
+    'nestedEnv' => [
+        'envMethod' => [
+            'envChild' => env('___KEY_FOR_CHILD_ENV___', "unknown fallback child value"),
+        ],
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application URL

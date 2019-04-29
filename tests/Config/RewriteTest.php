@@ -110,6 +110,18 @@ class RewriteTest extends TestCase
 
         $this->assertArrayHasKey('aNumber', $result);
         $this->assertEquals(69, $result['aNumber']);
+
+        /*
+         * Rewrite config with values from env
+         */
+        $contents = $writer->toContent($contents, [
+            'envMethod' => 'default',
+            'nestedEnv.envMethod.envChild' => 'default',
+        ]);
+        $result = eval('?>'.$contents);
+
+        $this->assertEquals('default', $result['envMethod']);
+        $this->assertEquals('default', $result['nestedEnv']['envMethod']['envChild']);
     }
 
 }
