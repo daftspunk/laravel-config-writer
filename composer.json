@@ -26,6 +26,13 @@
             "October\\Rain\\Config\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "October\Rain\Config\ServiceProvider",
+            ]
+        }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }
