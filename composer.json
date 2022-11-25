@@ -29,7 +29,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "October\Rain\Config\ServiceProvider",
+                "October\\Rain\\Config\\ServiceProvider",
             ]
         }
     },
