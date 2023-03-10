@@ -132,7 +132,7 @@ class Rewrite
         return $replaceValue;
     }
 
-    protected function writeArrayToPhp(array $array): array
+    protected function writeArrayToPhp(array $array): string
     {
         $result = [];
 
@@ -143,8 +143,6 @@ class Rewrite
         }
 
         return '['.implode(', ', $result).']';
-
-        return $result;
     }
 
     protected function buildStringExpression(string $targetKey, array $arrayItems = [], string $quoteChar = "'"): string
