@@ -34,9 +34,7 @@ jobs:
           ${{ runner.os }}-php-
 
     - name: Install dependencies
-      run: |
-        composer require "orchestra/testbench"
-        composer install --prefer-dist --no-progress
+      run: composer install --prefer-dist --no-progress
 
     - name: Run test suite
       run: composer run-script test
