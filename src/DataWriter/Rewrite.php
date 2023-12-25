@@ -57,7 +57,8 @@ class Rewrite
                     throw new Exception(sprintf('Unable to rewrite key "%s" in config, does it exist?', $key));
                 }
 
-                $array = $array[$part];
+                //$array = $array[$part]; //assigning old content to the var $actualvalue, will always fail
+                $array = $expectedValue;
             }
             $actualValue = $array;
 
