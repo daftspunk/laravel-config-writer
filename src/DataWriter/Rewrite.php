@@ -48,16 +48,22 @@ class Rewrite
 
         $result = eval('?>'.$contents);
 
+
         foreach ($newValues as $key => $expectedValue) {
             $parts = explode('.', $key);
 
             $array = $result;
             foreach ($parts as $part) {
+
                 if (!is_array($array) || !array_key_exists($part, $array)) {
                     throw new Exception(sprintf('Unable to rewrite key "%s" in config, does it exist?', $key));
                 }
+                if ( array_key_exists($part, $array) && is_string($array[$part])) {
+                    $array = $expectedValue;
+                } else {
+                    $array = $array[$part];
+                }
 
-                $array = $array[$part];
             }
             $actualValue = $array;
 

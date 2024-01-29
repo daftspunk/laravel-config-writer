@@ -62,7 +62,7 @@ class FileWriter
         return !($this->files->put($path, $contents) === false);
     }
 
-    private function getPath(string $item, string $filename, string $ext = '.php'): string
+    private function getPath(string $item, string $filename, string $ext = '.php'): ?string
     {
         $file = "{$this->defaultPath}/{$filename}{$ext}";
 
